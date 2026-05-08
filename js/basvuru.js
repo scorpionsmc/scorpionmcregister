@@ -97,6 +97,53 @@ form.addEventListener('submit', async (e) => {
 
   try {
     await database.ref('applications').push(applicationData);
+    
+    // Discord Webhook Notification
+    try {
+      const base64Data = uploadedImageBase64.split(',')[1];
+      const mimeType = uploadedImageBase64.split(';')[0].split(':')[1];
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], {type: mimeType});
+
+      const formData = new FormData();
+      formData.append('file', blob, 'screenshot.png');
+
+      const embed = {
+        title: "📋 YENİ BAŞVURU VAR!",
+        color: 16738560, // Turuncu
+        fields: [
+          { name: "IC İsim", value: icName, inline: true },
+          { name: "OOC İsim", value: oocName, inline: true },
+          { name: "Discord", value: discordName, inline: true },
+          { name: "FiveM Tecrübesi", value: fivemYears + " Yıl", inline: true },
+          { name: "Notlar", value: notes || "Belirtilmemiş", inline: false }
+        ],
+        image: {
+          url: "attachment://screenshot.png"
+        },
+        footer: {
+          text: "Scorpion MC Başvuru Sistemi",
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      formData.append('payload_json', JSON.stringify({
+        embeds: [embed]
+      }));
+
+      await fetch('https://discord.com/api/webhooks/1502126219871649913/4wMMgZbaPtsJyX-nqtPI3FngzwCf5KdL0nhzcQ2WI0JuKwKblOYJK_Du1h9Z6GQh3aEG', {
+        method: 'POST',
+        body: formData
+      });
+    } catch (discordErr) {
+      console.error('Discord bildirim hatası:', discordErr);
+    }
+
     // Show success modal
     document.getElementById('successModal').classList.add('active');
     form.reset();
