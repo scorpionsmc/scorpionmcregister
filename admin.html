@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scorpion MC - Admin Paneli">
+  <title>Admin Panel | Scorpion MC</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/logo.png">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar scrolled" id="navbar">
+    <a href="index.html" class="navbar-brand">
+      <img src="assets/logo.png" alt="Scorpion MC">
+      SCORPION MC
+    </a>
+    <ul class="navbar-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><button class="btn-login" id="logoutBtn">Çıkış Yap</button></li>
+    </ul>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menü">☰</button>
+  </nav>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>📋 Başvuru Yönetimi</h1>
+      <div class="admin-actions">
+        <button class="btn-outline" id="exportBtn" style="padding:10px 20px; font-size:0.75rem;">
+          📥 JSON DIŞA AKTAR
+        </button>
+        <label class="btn-outline" style="padding:10px 20px; font-size:0.75rem; cursor:pointer;">
+          📤 JSON İÇE AKTAR
+          <input type="file" id="importInput" accept=".json" style="display:none;">
+        </label>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="pending">
+        Bekleyenler <span class="badge badge-pending" id="pendingCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="approved">
+        Onaylananlar <span class="badge badge-approved" id="approvedCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="rejected">
+        Reddedilenler <span class="badge badge-rejected" id="rejectedCount">0</span>
+      </button>
+    </div>
+
+    <!-- TAB CONTENTS -->
+    <div id="pendingTab" class="tab-content">
+      <div class="app-grid" id="pendingGrid"></div>
+    </div>
+    <div id="approvedTab" class="tab-content" style="display:none;">
+      <div class="app-grid" id="approvedGrid"></div>
+    </div>
+    <div id="rejectedTab" class="tab-content" style="display:none;">
+      <div class="app-grid" id="rejectedGrid"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="Büyük görüntü">
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
